@@ -1,0 +1,815 @@
+@charset "utf-8";
+/*二、公用样式*/
+.go{
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	position: fixed;
+	right: 30px;
+	top: 30px;
+	z-index: 1001; /*层叠顺序*/
+}
+.more{
+	position: fixed;
+	bottom: 80px;
+	right: 60px;
+	z-index: 1001; 
+	/*7、调用动画*/
+	animation: more 0.3s linear infinite alternate;
+}
+/*三、第一个屏幕背景*/
+.screen01{
+	/*设置不平铺，左右居中、底部对齐*/
+	background: url(../images/01-bg.png) no-repeat center bottom;
+}
+/*1、第一个屏幕内容*/
+.conten{
+	width: 900px;
+	height: 600px;
+	background: rgba(0,0,0,0.1);
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	margin-left: -450px;
+}
+.screen01 .goods{
+	text-align: center; /*因为里面的img是个行内块元素*/
+	margin-top: 230px;
+}
+.screen01 .sofa{
+	position: absolute;
+	left: 230px;
+	top: 150px;
+	/*9、调用动画*/
+	animation: sofa01 0.8s linear infinite alternate;
+}
+.screen01 .fly{
+	position: absolute;
+	right: -50px;
+	top: 20px;
+	/*5、调用动画：调用动画 1秒执行一次，匀速运动，循环播放、设置播放流畅（逆播放）*/
+	animation: fly01 1s linear infinite alternate;
+}
+/*2、第一屏动画*/
+/*3、定义动画序列；说明：布局尽可能使用定位（提前把所有的容器都固定在某个地方），动画尽可能使用位移（做单都的动画）translate*/
+/*4、横幅动画*/
+@keyframes fly01{ 
+	from{ /*从哪里来=0%*/
+		transform: translateY(-52px);
+	}
+	to{ /*到哪里去=100%*/
+		transform: translateY(50px);
+	}
+}
+/*6、定义动画--继续往下*/
+@keyframes more{
+	from{ 
+		transform: translateY(-10px);
+	}
+	to{ 
+		transform: translateY(10px);
+	}
+}
+/*8、定义沙发动画*/
+@keyframes sofa01{
+	from{ 
+		transform: translateY(-20px);
+	}
+	to{ 
+		transform: translateY(20px);
+	}
+}
+
+
+
+/*第二屏内容*/
+.screen02{
+	background: url(../images/02-bg.png) no-repeat center bottom;
+}
+.screen02 .goods{
+	position: absolute;
+	left: 50%;
+	margin-left: -220px;
+	bottom: 210px;
+	 /*8-1、设置沙发的隐藏*/
+	transform-origin: right bottom;
+	transform: scale(0); 
+}
+.screen02 .sofa{
+	transform: scale(0.5); /*设置沙发缩放0.5*/
+	position: absolute;
+	left: 292px;
+	top: 132px;
+	 /*8-2、设置沙发的隐藏*/
+	opacity: 0;
+	z-index: 1001;
+}
+.screen02 .input{
+	/*1、父容器相对定位*/
+	position: relative;
+	left: 302px;
+	top: 120px;
+	 /*3、右上角定位缩放，最初始位置默认的转换原点在中心，现在要求在右上角
+	transform: scale(0.7);*/
+	/*最中心位置定位
+	transform: translate(50px,127px);*/
+	/*最右边的位置
+	transform: translate(2000px,127px);*/
+	transform-origin: right top;
+	/*11、设置文本框一开始是看不见的*/
+	opacity: 0; 
+}
+.screen02 .input .key{
+	/*2、子容器绝对定位*/
+	position: absolute;
+	left: 100px;
+	top: 4px;
+	/*2-1、设置沙发开始为看不见*/
+	opacity: 0;
+}
+.screen02 .text{
+	text-align: center;
+}
+.screen02 .text .txt02{
+	/*4、设置第二个文字隐藏隐藏--不占位*/
+	position: absolute;
+	opacity: 0;
+}
+
+/*5、第二屏动画；now是在JS里面追加的，有now就表示进入动画*/
+.screen02.now .text .txt01{ /*当有now的时候，文字做变化*/
+	/*6、隐藏txt01的文字*/
+	position: absolute;
+	opacity: 0;
+}
+.screen02.now .text .txt02{
+	/*7、显示txt01的文字*/
+	position: static; /*没有定位*/
+	opacity: 1;
+	transition: opacity 1s;  /*加过渡--给opacity做动画，时间1秒钟*/
+}
+ /*10、调用动画*/
+.screen02.now .input{
+	/*13、动画播放完成的状态控制forwards(回到原点；默认属性)、backwards(保持当前状态)*/
+	animation: input02 3s linear forwards;
+}
+
+/*8、搜索框在右边动画的出来*/
+/*9、定义动画--通过四个节点控制动画*/
+@keyframes input02{
+	0%{
+		/*9-1、初始化元素的位置*/
+		transform: translate(2000px,127px); /*最右边*/
+		/*12、设置文本框进来的时候能看见*/
+		opacity: 1;
+	}
+	33.3%{
+		transform: translate(50px,127px); /*中心位置*/
+	}
+	67%{
+		transform: translate(50px,127px); /*中心位置*/
+	}
+	100%{
+		transform: scale(0.7);
+		opacity: 1;
+	}
+}
+/*14、在显示器中间停留的过程中要显示关键字*/
+/*15、设置文本框停留的时候显示文字*/
+.screen02.now .input .key{
+	opacity: 1;
+	transition: all 1s linear 1s;
+}
+/*16、商品列表动画显示，搜索框动画位移到右上角*/
+.screen02.now .goods{
+	/*none：清空所有转化属性=scale(1)*/
+	transform: none;
+	transition: all 1s linear 2s;
+}
+
+
+
+/*三、第二屏到第三屏的动画*/
+/*1、当离开第二屏的时候给沙发做动画,和页面的滚动同步*/
+@keyframes sofa02{
+	from{
+		opacity: 1;
+	}
+	to{
+		opacity: 1; 
+		/*沙发下移*/
+		transform: translate(-80px,800px);
+	}
+}
+.screen02.leaved .sofa{ /*调用JS里面定义的leaved*/
+	animation: sofa02 1s linear;
+}
+
+
+
+/*第三屏内容*/
+/*1、添加背景图*/
+.screen03{
+	background: url(../images/03-bg.png) no-repeat center bottom;
+}
+.screen03 .sofa{
+	position: absolute;
+	left: 212px;
+	top: 180px;
+	display: none;
+}
+/*2、隐藏change里面的第二张图*/
+.screen03 .change img:last-child{
+	position: absolute;
+	opacity: 0;
+}
+/*3、隐藏cart里面的第二张图*/
+.screen03 .cart img:last-child{
+	position: absolute;
+	opacity: 0;
+}
+/*4、设置change的第一张图的位置*/
+.screen03 .change{
+	position: absolute;
+	right: 115px;
+	bottom: 160px;
+}
+/*5、设置cart的第一张图的位置*/
+.screen03 .cart{
+	position: absolute;
+	right: 193px;
+	bottom: 85px;
+} 
+
+
+
+/*第三屏动画*/
+/*6、显示.change里面的最后一张图*/
+.screen03.now .change img:last-child{
+	position: static;
+	opacity: 1;
+	transition: all 1s linear;
+}
+/*7、隐藏.change里面的第一张图*/
+.screen03.now .change img:first-child{
+	display: none;
+}
+/*8、显示.cart里面的最后一张图*/
+.screen03.now .cart img:last-child{
+	position: static;
+	opacity: 1;
+	transition: all 1s linear;
+}
+/*9、隐藏.cart里面的第一张图*/
+.screen03.now .cart img:first-child{
+	display: none;
+}
+/*10、设置沙发进来的时候隐藏*/
+.screen03.now .sofa{
+	display: block;
+	z-index: 1001;
+} 
+
+/*6-1、离开（.leaved：JS定义）第三屏的时候沙发掉到第四屏动画*/
+.screen03.leaved .sofa{
+	/*1、组合写法，多个转换属性之间用空格隔开；transform: rotate() translateX() skew() scale()*/
+	/*2、如果你先选择，坐标轴也会跟着旋转*/
+	/*3、最好是先位移，在旋转*/
+	animation: sofa03 1s linear;  /*调用第三屏定义动画*/
+}
+/*6、定义第三屏沙发动画*/
+@keyframes sofa03{
+	from{}
+	to{
+		transform: translate(180px,800px) rotate(45deg);	
+	}
+}
+
+
+
+
+/*第四屏内容*/
+.screen04{
+	background: url(../images/04-bg.png) no-repeat center bottom;
+}
+.screen04 .cloud{
+	position: absolute;
+	left: -400px;
+	top: -50px;
+	/*2、调用动画*/
+	animation: cloud04 20s linear infinite alternate;
+}
+/*1、白云动画*/
+@keyframes cloud04{
+	from{}
+	to{
+		transform: translateX(1000px)
+	}
+}
+/*3、设置文字图片*/
+.screen04 .text{
+	text-align: center;
+	margin-top: 130px;
+}
+/*4、设置text里面的最后张图片隐藏*/
+.screen04 .text img:last-child{
+	position: absolute;
+	opacity: 0;
+}
+/*5、设置购物车*/
+.screen04 .cart{
+	text-align: center;
+	margin-top: 60px;
+	/*7、让沙发掉下来的时候在购物车后面*/
+	position: relative;
+	z-index: 1002;
+}
+/*8、设置购物车上面沙发的位置、旋转角度、不可见*/
+.screen04 .sofa{
+	position: absolute;
+	top: 200px;
+	left: 388px;
+	transform: rotate(28deg);
+	/*display: none;*/
+	opacity: 0;
+}
+/*9、设置购物车里面的沙发可见后，跟着购物车一起运动*/
+.screen04.now .sofa{
+	/*display: block;*/
+	opacity: 1;
+	transition: transform 3s;
+	transform: translateX(1200px);
+}
+/*10、设置购物车动画--设置购物车移动的时候沙发跟着移动*/
+.screen04.now .cart{
+	transition: all 3s;
+	transform: translateX(1200px);
+}
+
+/*11、购物车动画完毕后，出现收获地址内容*/
+.screen04 .address{
+	position: absolute;
+	left: 50%;
+	width: 283px;
+	height: 270px;
+	/*CS3居中方式 基于本身*/
+	transform: translateX(-50%);
+	bottom: 150px;
+	/*一开始为隐藏，动画结束后出来*/
+	display: none; 
+}
+/*第四屏购物车动画结束后，执行收货地址的动画（JS实现）*/
+/*12、设置收货地址里面的最后一张图片样式*/
+.screen04 .address img:last-child{
+	position: absolute;
+	top: 60px;
+	left: 50%;
+	/*CS3居中方式 基于本身*/
+	transform: translateX(-50%);
+	z-index: 1001;
+	display: none;
+}
+
+/*13、第一张文字隐藏*/
+.screen04 .text.show img:first-child{
+	position: absolute;
+	opacity: 0;
+}
+/*14、最后一张文字显示*/
+.screen04 .text.show img:last-child{
+	position: static;
+	opacity: 1;
+	transition: all 1s linear;
+}
+
+
+/*第五屏内容*/
+.screen05{
+	background: url(../images/05-bg.png) no-repeat center bottom;
+}
+/*1、设置沙发位置和倾斜--这部可以线把鼠标布局完后再设置*/
+.screen05 .sofa{
+	position: absolute;
+	bottom: 100px;
+	left: 100px;
+	transform: rotate(30deg);
+	opacity: 0;
+	/*transform: translateY(-150px) rotate(30deg);*/
+	z-index: 1001;
+}
+/*2、设置银行卡的位置--从这步开始设置*/
+.screen05 .card{
+	position: absolute;
+	left: 0;
+	bottom: 210px;
+	z-index: 1002;
+}
+.screen05 .card .cardImg{
+	position: relative; /*设置占位置，不然orderImg没高度*/
+	z-index: 1; /*设置orderImg在cardImg的后面*/
+}
+/*3、设置银行卡里面的账单*/
+.screen05 .card .orderImg{
+	position: absolute;
+	left: 140px;
+	top: -80px;
+	/*14、设置账单隐藏（往下移），方便第13的动画设置*/
+	transform: translateY(80px);
+}
+/*4、设置鼠标*/
+.screen05 .mouse{
+	position: absolute;
+	right: 0;
+	top: 0;	
+	/*15、隐藏多出的鼠标线*/
+	overflow: hidden;
+	height: 100%;
+	width: 400px;
+}
+/*5、设置鼠标里面的鼠标线*/
+.screen05 .mouse .m1,
+.screen05 .mouse .m2{
+	position: absolute;
+	bottom: 215px;
+	right:0; 
+}
+/*16、隐藏鼠标线后--高度缺少了*/
+.screen05 .conten{
+	height: 100%; /*只有当前屏幕才是100%*/
+}
+/*6、隐藏鼠标上面的第二张图片*/
+.screen05 .mouse .m2{
+	/*display: none;*/
+	opacity: 0;
+}
+/*7、把手放在鼠标上*/
+.screen05 .mouse .hand{
+	position: absolute;
+	bottom: 0px;
+	right: 50px;
+	/*8、设置鼠标手往下移动（手就不见了），方便做动画*/
+	transform: translateY(500px);
+}
+/*17、文字*/
+.screen05 .text{
+	position: absolute;
+	bottom: 550px;
+	left: 0;
+}
+
+/*第五屏动画*/
+/*9、手的动画*/
+.screen05.now .hand{
+	transition: all 1s linear;
+	transform: none;  /*先把手移出去，当screen05.now .hand有now的时候就变为原始的状态，
+						原始的状态就是.screen05 .mouse .hand里面的定位*/
+}
+/*10、当手放在鼠标上后显示第二张图片*/
+.screen05.now .mouse .m2{
+	transition: all 0.2s linear 1s;
+	opacity: 1;
+}
+/*11、沙发动画--定义沙发动画*/
+@keyframes sofa05{
+	from{
+		transform: translateY(-1000px) rotate(30deg); /*把沙发往上移*/
+		opacity: 1;  /*在执行鼠标动画的时候是看不到沙发的，所以在前面设置了隐藏沙发.screen05 .sofa*/
+	}
+	50%{
+		transform: translateY(-150px) rotate(30deg);
+	}
+	100%{
+		opacity: 1;
+		transform: rotate(30deg);
+	}
+}
+/*12、调用定义的动画*/
+.screen05.now .sofa{
+	animation: sofa05 1s linear 1.2s forwards;
+}
+/*13、设置银行卡下面的账单动画*/
+.screen05.now .card .orderImg{
+	transition: all 1s linear 2s; 
+	transform: none; /*最开始(14)的时候transformY(80),下面写成none就回到原点了*/
+}
+
+
+
+
+
+/*第六屏内容*/
+.screen06{
+	background: url("../images/06-bg.png") no-repeat 25% bottom;
+}
+/*15、当盒子掉到车里面去后，车子开走，这个时候不是车在运动，而是背景运动--背景动画*/
+.screen06.now{
+	transition: background 1s linear 1s;
+	background: url("../images/06-bg.png") no-repeat -500px bottom;
+}
+/*1、设置白云位置*/
+.screen06 .cloud{
+	position: absolute;
+	top: -100px;
+	left: 0;
+}
+/*2、定义白云动画*/
+@keyframes cloud06{
+	from{} /*一开始默认位置*/
+	to{
+		transform: translateX(1000px);
+	}
+}
+/*3、调用白云动画*/
+.screen06 .cloud img:first-child{
+	animation: cloud06 40s linear infinite alternate;
+}
+.screen06 .cloud img:last-child{
+	position: absolute;
+	top: 0;
+	left: 0;
+	animation: cloud06 20s linear infinite alternate;
+}
+/*4、设置文字*/
+.screen06 .text{
+	position: absolute;
+	top: 80px;
+	left: 140px;
+}
+.screen06 .text img:first-child{
+	position: absolute;
+	top: -50px;
+	left: 0;
+}
+/*5、隐藏文字里面的第二张图片*/
+.screen06 .text img:last-child{
+	position: absolute;
+	opacity: 0;
+	left: 0;
+	top: -50px;
+}
+/*6、设置包裹*/
+.screen06 .box{
+	position: absolute;
+	left: 150px;
+	top: 150px;
+	z-index: 1002; 
+	/*9、设置盒子往左边移动500个像素--第五屏的沙发和第六屏的沙发是一块运动的*/
+	transform: translateX(-500px)
+}
+/*7、定义发从第五屏掉到第六屏动画*/
+@keyframes sofa05-06{
+	from{
+		opacity: 1;
+		transform: rotate(30deg);
+	}
+	to{
+		opacity: 1;
+		transform: translateY(850px) scale(0.2) rotate(30deg);	
+	}
+}
+/*8、调用定义的动画,用leaved（JS定义）来控制*/
+.screen05.leaved .sofa{
+	animation: sofa05-06 1.3s linear;
+}
+/*10、设置盒子动画；定义盒子动画*/
+@keyframes box06{
+	from{
+		transform: translate(-500px);  /*让盒子往左边移动500像素*/
+	}
+	50%{
+		transform: none;  /*让移动后的盒子回到原始位置*/
+	}
+	to{
+		transform: translateY(330px) scale(0.3); /*设置盒子调到汽车里面,同时缩放*/
+	}
+}
+/*11、调用盒子动画,放box有show这个类的时候，证明盒子要跟着沙发一起做动画*/
+.screen06 .box.show{
+	animation: box06 2s linear forwards;
+}
+/*12、设置汽车位置*/
+.screen06 .car{
+	position: absolute;
+	bottom: 0;
+	left: 100px;
+	/*设置盒子调到汽车里面去隐藏*/
+	z-index: 1003;  
+	width: 221px;
+	height: 122px;
+}
+/*13、隐藏汽车里面的所有图片*/
+.screen06 .car img{
+	position: absolute;
+	opacity: 0;
+	/*left: 0;
+	top: 0;*/
+}
+/*14、显示汽车*/
+.screen06 .car .carImg{
+	opacity: 1;
+	position: relative;
+}
+/*16、当盒子掉到车里面去后，背景运动在运动的同时显示买家地址的动画*/
+.screen06.now .car .buyer{
+	/*设置延迟1.25秒后买家地址出现*/
+	transition: all 0.25s 1.25s;  
+	opacity: 1;
+}
+/*17、设置买家地址运动时候的位置*/
+.screen06 .car .buyer{
+	left: 160px;
+	top: -50px;
+}
+/*18、设置收获地址运动时候的位置*/
+.screen06 .car .address{
+	left: 160px;
+	top: -50px;
+}
+/*19、设置收获地址动画*/
+.screen06.now .car .address{
+	transition: all 0.25s 1.8s;  
+	opacity: 1;
+}
+/*20、设置快递小哥属性*/
+.screen06 .car .worke{
+	/*定位在左下角*/
+	left: 0;
+	bottom: 0;
+	opacity: 1;
+	transform: scale(0); /*缩放为0，隐藏*/
+	transform-origin: left bottom; /*设置左下角定位*/
+}
+/*21、设置快递小哥动画*/
+.screen06.now .car .worke{
+	/*25、调用快递小哥动画*/
+	animation: worke06 2.1s linear 2s forwards;
+}
+/*22、定义快递小哥动画序列*/
+@keyframes worke06{
+	from{ /*默认起始位置为0*/
+		opacity: 1;
+	}
+	33.3%{
+		transform: scale(1);
+	}
+	66.7%{
+		transform: scale(1) translateY(-100px);  /*保留原始尺寸，并且往上移*/
+	}
+	100%{
+		opacity: 1;
+		transform: scale(1) translateY(-100px) translateX(520px); /*保留原始尺寸，并且往上移的同时往右移动*/
+	}
+}
+/*23、设置快递小哥出来后，说的话的定位*/
+.screen06 .car .say{
+	right: -430px;
+	top: -400px; 
+}
+/*24、快递小哥出来动画*/
+.screen06.now .car .say{
+	opacity: 1;
+	transition: all 0.5s linear 4.2s;
+}
+/*25、设置快递小哥出来后，背景上文字的变化*/
+.screen06.now .text img:first-child{
+	opacity: 0;
+	transition: all 0.1s linear 4.6s;
+}
+.screen06.now .text img:last-child{
+	opacity: 1;
+	transition: all 1s linear 4.6s;
+}
+/*26、设置收货人的位置,并且设置门的位置*/
+.screen06 .person{
+	width: 106px;
+	height: 150px;
+	position: absolute;
+	right: -308px;
+	bottom: 116px;
+}
+/*27、设置收货人的隐藏*/
+.screen06 .person .personImg{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	transform: scale(0);  /*缩放为0；隐藏*/
+	transform-origin: right bottom; /*设置人出现的位置为右下角*/
+}
+/*28、设置门隐藏*/
+.screen06 .person .door{
+	opacity: 0;
+}
+/*29、设置门的动画：当快递小哥说完话后门就打开了*/
+.screen06.now .person .door{
+	/*31、以动画的形式显示门*/
+	opacity: 1;
+	transition: all 0.4s linear 4.6s;
+}
+/*30、设置收货人出现，当门打开后收获人出来*/
+.screen06.now .person .personImg{
+	transform: none;  /*当有now的时候，人物缩放回到原始状态，因为上面隐藏的时候设置的缩放为0*/
+	/*transition: all 0.5s linear 5s;*/
+	right: 200px; /*设置右移位置的大小*/
+	/*注意一点：不是同样的属性状态改变*/
+	transition: transform 0.5s linear 5s,right 0.5s linear 5.5s; 
+	/*这里的transform表示，只针对transform做过渡(这部分是先做放大的动画)；
+	  多个属性的过渡用逗号隔开，对right进行过渡（这部分是再做右移的动画）*/
+ }
+
+
+/*第七屏动画*/
+/*1、添加背景*/
+.screen07{
+	background: url(../images/07-bg.png) no-repeat center bottom;
+}
+/*2、设置星星位置和隐藏*/
+.screen07 .star{
+	position: absolute;
+	top: 141px;
+	left: 157px;
+}
+/*3、去掉星星之间的间距*/
+.screen07 .star img{
+	float: left;
+	margin-right: 6px;
+	/*display: none;  5、这里用JS做，不用C3做，所有没用opacity*/
+	/*5-1、使用C3实现星星的出现*/
+	opacity: 0;
+}
+/*5-2、使用C3实现星星的出现动画*/
+.screen07 .star.show img{
+	opacity: 1;
+	transform: all 0.3s linear;
+}
+/*4、设置文字位置和隐藏*/
+.screen07 .text{
+	position: absolute;
+	top: 180px;
+	left: 166px;
+	opacity: 0;
+	transform-origin: left bottom;  /*设置中心点为左下角*/
+	transform: scale(0);  /*设置缩放为0*/
+}
+/*6、当星星出来完后，文字出现动画*/
+.screen07 .text.show{
+	opacity: 1;
+	/*transform: none;  让缩放的文字回到原始状态
+	transition: all 1s linear 2.3s;*/
+	/*8、调用定义的文字动画*/
+	animation: text07 1.5s linear 2.3s forwards;
+	
+}
+/*7、定义文字动画,并且设置文字忽大忽小的效果*/
+@keyframes text07{
+	from{}
+	70%{
+		transform: scale(1.2);  /*文字从缩放0变成1.2*/
+	}
+	to{
+		transform: none;  /*让缩放的文字回到原始状态*/
+	}
+}
+
+
+/*第八屏动画*/
+/*1、添加背景*/
+.screen08{
+	background: url(../images/08-bg.png);
+}
+/*2、设置按钮*/
+.screen08 .btn{
+	width: 389px;
+	height: 160px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);  /*使用transform设置居中*/
+}
+/*3、设置按钮的第二张图片隐藏*/
+.screen08 .btn img:last-child{
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+}
+/*4、设置鼠标经过的时候显示按钮里面的第二张图片*/
+.screen08 .btn:hover img:last-child{
+	opacity: 1;
+}
+/*5、设置“再来一次”按钮位置*/
+.screen08 .again{
+	position: absolute;
+	right: 0;
+	top: 100px;
+	transform: translate(-50%); /*使用transform设置居中*/
+}
+/*6、设置手的位置*/
+.screen08 .hand{
+	position: absolute;
+	left: 50%;
+	top: 90px;
+	/*transform: translateX(-50%);  使用transform设置居中*/
+	margin-left: -270px;
+	margin-top: -215px;
+}
+
+
